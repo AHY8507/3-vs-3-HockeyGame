@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 pygame.init()
-
+ 
 win_length = 1500
 win_width = 800
 win = pygame.display.set_mode((win_length , win_width))
