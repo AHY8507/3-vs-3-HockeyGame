@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from random import *
 
 pygame.init()
  
@@ -57,6 +58,22 @@ def update_right_side():
     pygame.draw.circle(win , (0 , 255 , 0) , (ai_2_x , ai_2_y) , 30 , 5)
     pygame.draw.circle(win , (0 , 255 , 0) , (ai_3_x , ai_3_y) , 30 , 5)
 
+player = 0 # 0 : No Player , 1: Player 1 , 2: Player 2 , 3: Player 3
+
+def catching_ball_player1():
+    if abs(ball_x - player_1_x) <= 20 and abs(ball_y - player_1_y) <= 20:
+        global player
+        player = 1
+
+def catching_ball_player2():
+    if abs(ball_x - player_2_x) <= 20 and abs(ball_y - player_2_y) <= 20:
+        global player
+        player = 2
+
+def catching_ball_player3():
+    if abs(ball_x - player_3_x) <= 20 and abs(ball_y - player_3_y) <= 20:
+        global player
+        player = 3
 
 player_place_changer = 0
 player_place_dic = None
@@ -90,24 +107,41 @@ while True:
             if event.key == K_w or event.key == K_s or event.key == K_d or event.key == K_a:
                 player_place_changer = 0
         
+        catching_ball_player1()
+        catching_ball_player2()
+        catching_ball_player3()
+
         if recent_player == 1:
             if player_place_dic == 1 and player_1_y + player_place_changer - 20 < win_width - 100 and player_1_y + player_place_changer - 30 > 50:
                 player_1_y += player_place_changer
+                if player == 1:
+                    ball_y += player_place_changer
             elif player_place_dic == 0 and player_1_x + player_place_changer - 20 < win_length - 100 and player_1_x + player_place_changer - 30 > 50:
                 player_1_x += player_place_changer
+                if player == 1:
+                    ball_x += player_place_changer
         elif recent_player == 2:
             if player_place_dic == 1 and player_2_y + player_place_changer - 20 < win_width - 100 and player_2_y + player_place_changer - 30 > 50:
                 player_2_y += player_place_changer
+                if player == 2:
+                    ball_y += player_place_changer
             elif player_place_dic == 0 and player_2_x + player_place_changer - 20 < win_length - 100 and player_2_x + player_place_changer - 30 > 50:
                 player_2_x += player_place_changer
+                if player == 2:
+                    ball_x += player_place_changer
         else:
             if player_place_dic == 1 and player_3_y + player_place_changer - 20 < win_width - 100 and player_3_y + player_place_changer - 30 > 50:
                 player_3_y += player_place_changer
+                if player == 3:
+                    ball_y += player_place_changer
             elif player_place_dic == 0 and player_3_x + player_place_changer - 20 < win_length - 100 and player_3_x + player_place_changer - 30 > 50:
                 player_3_x += player_place_changer
+                if player == 3:
+                    ball_x += player_place_changer
         
         update_playground()
         update_ball()
         update_left_side()
         update_right_side()
         pygame.display.update()
+        pygame.time.Clock()
