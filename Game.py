@@ -64,21 +64,23 @@ def update_right_side():
 
 player = 0 # 0 : No Player , 1: Player 1 , 2: Player 2 , 3: Player 3
 
+distance = 20
+
 def catching_ball_player1():
     global player , ball_x , ball_y
-    if abs(ball_x - player_1_x) <= 20 and abs(ball_y - player_1_y) <= 20:
+    if abs(ball_x - player_1_x) <= distance and abs(ball_y - player_1_y) <= distance:
         player = 1
         ball_x , ball_y = player_1_x , player_1_y
 
 def catching_ball_player2():
     global player , ball_x , ball_y
-    if abs(ball_x - player_2_x) <= 20 and abs(ball_y - player_2_y) <= 20:
+    if abs(ball_x - player_2_x) <= distance and abs(ball_y - player_2_y) <= distance:
         player = 2
         ball_x , ball_y = player_2_x , player_2_y
 
 def catching_ball_player3():
     global player , ball_x , ball_y
-    if abs(ball_x - player_3_x) <= 20 and abs(ball_y - player_3_y) <= 20:
+    if abs(ball_x - player_3_x) <= distance and abs(ball_y - player_3_y) <= distance:
         player = 3
         ball_x , ball_y = player_3_x , player_3_y
 
@@ -117,8 +119,6 @@ while True:
             catching_ball_player1()
             catching_ball_player2()
             catching_ball_player3()
-
-
 
         if recent_player == 1:
             if player_place_dic == 1 and player_1_y + player_place_changer - 20 < win_width - 100 and player_1_y + player_place_changer - 30 > 50:
