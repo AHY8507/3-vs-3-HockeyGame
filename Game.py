@@ -106,10 +106,10 @@ while True:
         elif event.type == KEYUP:
             if event.key == K_w or event.key == K_s or event.key == K_d or event.key == K_a:
                 player_place_changer = 0
-        
-        catching_ball_player1()
-        catching_ball_player2()
-        catching_ball_player3()
+        if player == 0:
+            catching_ball_player1()
+            catching_ball_player2()
+            catching_ball_player3()
 
         if recent_player == 1:
             if player_place_dic == 1 and player_1_y + player_place_changer - 20 < win_width - 100 and player_1_y + player_place_changer - 30 > 50:
