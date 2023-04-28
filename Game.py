@@ -87,6 +87,10 @@ def catching_ball_player3():
 player_place_changer = 0
 player_place_dic = None
 
+def go_there(start_x , start_y , dest_x , dest_y):
+    print(dest_x - start_x)
+    print(dest_y - start_y)
+
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
