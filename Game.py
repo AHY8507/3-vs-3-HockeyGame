@@ -10,7 +10,7 @@ win_width = 800
 
 
 win = pygame.display.set_mode((win_length , win_width))
-#win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+# win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 pygame.display.set_caption("Game")
 
@@ -39,6 +39,9 @@ ball_y = win_width / 2
 
 color_red = 0
 color_green = 0
+color_blue = 255
+
+color_blue_changer = -1
 
 def update_ball():
     pygame.draw.circle(win , (255 , 0 , 0) , (ball_x , ball_y) , 20)
@@ -47,9 +50,11 @@ def update_ball():
 
 def update_playground():
     win.fill((0 , 0 , 0))
-    pygame.draw.rect(win , (color_red , color_green , 255) , ((50 , 50) , (win_length - 100 , win_width - 100)) , 3)
-    pygame.draw.rect(win , (color_red , color_green , 255) , ((5 , (win_width / 2) - 90) , (48 , 180)) , 3)
-    pygame.draw.rect(win , (color_red , color_green , 255) , ((win_length - 53 , (win_width / 2) - 90) , (50 , 180)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , color_blue) , ((50 , 50) , (win_length - 100 , win_width - 100)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , color_blue) , ((5 , (win_width / 2) - 90) , (48 , 180)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , color_blue) , ((win_length - 53 , (win_width / 2) - 90) , (50 , 180)) , 3)
+    pygame.draw.line(win , (color_red , color_green , color_blue) , (win_length / 2 , 50) , (win_length / 2 , win_width - 50) , 3)
+    pygame.draw.circle(win , (color_red , color_green , color_blue) , (win_length / 2 , win_width / 2) , 150 , 3)
     
 
 def update_left_side():
@@ -159,6 +164,14 @@ while True:
 
         elif color_green == 0 and color_red > 0:
             color_red -= 1
+
+        if color_blue == 255:
+            color_blue_changer = -1
+        elif color_blue == 0:
+            color_blue_changer = 1
+
+        color_blue += color_blue_changer
+
 
         
         update_playground()
