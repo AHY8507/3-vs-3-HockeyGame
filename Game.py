@@ -38,7 +38,7 @@ ball_x = win_length / 2
 ball_y = win_width / 2
 
 color_red = 0
-color_change_play_ground = 1
+color_green = 0
 
 def update_ball():
     pygame.draw.circle(win , (255 , 0 , 0) , (ball_x , ball_y) , 20)
@@ -47,9 +47,9 @@ def update_ball():
 
 def update_playground():
     win.fill((0 , 0 , 0))
-    pygame.draw.rect(win , (color_red , 255 , 255) , ((50 , 50) , (win_length - 100 , win_width - 100)) , 3)
-    pygame.draw.rect(win , (color_red , 255 , 255) , ((5 , (win_width / 2) - 90) , (48 , 180)) , 3)
-    pygame.draw.rect(win , (color_red , 255 , 255) , ((win_length - 53 , (win_width / 2) - 90) , (50 , 180)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , 255) , ((50 , 50) , (win_length - 100 , win_width - 100)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , 255) , ((5 , (win_width / 2) - 90) , (48 , 180)) , 3)
+    pygame.draw.rect(win , (color_red , color_green , 255) , ((win_length - 53 , (win_width / 2) - 90) , (50 , 180)) , 3)
     
 
 def update_left_side():
@@ -148,12 +148,19 @@ while True:
                 if player == 3:
                     ball_x = player_3_x
 
+        if color_green < 255 and color_red == 0:
+            color_green += 1
 
-        if color_red == 255:
-            color_change_play_ground = -1
-        if color_red == 0:
-            color_change_play_ground = 1
-        color_red += color_change_play_ground
+        elif color_green == 255 and color_red < 255:
+            color_red += 1
+        
+        elif color_green > 0 and color_red == 255:
+            color_green -= 1
+
+        elif color_green == 0 and color_red > 0:
+            color_red -= 1
+
+        
         update_playground()
         update_ball()
         update_left_side()
