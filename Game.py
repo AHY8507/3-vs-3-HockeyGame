@@ -53,7 +53,7 @@ def update_playground():
     pygame.draw.rect(win , (color_red , color_green , color_blue) , ((50 , 50) , (win_length - 100 , win_width - 100)) , 3)
     pygame.draw.rect(win , (color_red , color_green , color_blue) , ((5 , (win_width / 2) - 90) , (48 , 180)) , 3)
     pygame.draw.rect(win , (color_red , color_green , color_blue) , ((win_length - 53 , (win_width / 2) - 90) , (50 , 180)) , 3)
-    pygame.draw.line(win , (color_red , color_green , color_blue) , (win_length / 2 , 50) , (win_length / 2 , win_width - 50) , 3)
+    pygame.draw.line(win , (color_red , color_green , color_blue) , (win_length / 2 , 50) , (win_length / 2 , win_width - 50 - 3) , 3)
     pygame.draw.circle(win , (color_red , color_green , color_blue) , (win_length / 2 , win_width / 2) , 150 , 3)
     
 
@@ -66,6 +66,9 @@ def update_right_side():
     pygame.draw.circle(win , (0 , 255 , 0) , (ai_1_x , ai_1_y) , 30 , 5)
     pygame.draw.circle(win , (0 , 255 , 0) , (ai_2_x , ai_2_y) , 30 , 5)
     pygame.draw.circle(win , (0 , 255 , 0) , (ai_3_x , ai_3_y) , 30 , 5)
+
+def find_keeper_place(ball_y , size_y , ground_y):
+    return (ball_y * size_y) // ground_y
 
 player = 0
 
@@ -173,7 +176,34 @@ while True:
         color_blue += color_blue_changer
 
 
+        if ball_x <= win_length / 2:
+            if ai_2_y - (win_width / 2) >= 1:
+                ai_2_y -= 1
+            elif ai_2_y - (win_width / 2) <= -1:
+                ai_2_y += 1
+
+            if abs(player_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)) <= 20 and player != 1 and player != 3:
+                player_2_y = (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)
+            elif abs(player_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)) > 20 and player != 1 and player != 3:
+                if player_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90) < 0:
+                    player_2_y += 5
+                else:
+                    player_2_y -= 5
         
+        elif ball_x > win_length / 2:
+            if player_2_y - (win_width / 2) >= 1:
+                player_2_y -= 1
+            elif player_2_y - (win_width / 2) <= -1:
+                player_2_y += 1
+
+            if abs(ai_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)) <= 20 and player != 4 and player != 6:
+                ai_2_y = (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)
+            elif abs(ai_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90)) > 20 and player != 4 and player != 6:
+                if ai_2_y - (find_keeper_place(ball_y , 160 , win_width - 100) + win_width / 2 - 90) < 0:
+                    ai_2_y += 5
+                else:
+                    ai_2_y -= 5
+
         update_playground()
         update_ball()
         update_left_side()
