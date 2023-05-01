@@ -72,7 +72,7 @@ def find_keeper_place(ball_y , size_y , ground_y):
 
 player = 0
 
-shooter = 0 #shooter of the ball
+shooter = 0 
 
 x = 0
 y = 0
@@ -80,25 +80,75 @@ y = 0
 distance = 20
 
 def catching_ball_player1():
-    global player , ball_x , ball_y
-    if abs(ball_x - player_1_x) <= distance and abs(ball_y - player_1_y) <= distance:
-        player = 1
-        ball_x , ball_y = player_1_x , player_1_y
-        shooter = 0
+    global player , ball_x , ball_y , shooter , recent_player
+    if player == 0:
+        if shooter != 1:
+            if abs(ball_x - player_1_x) <= distance and abs(ball_y - player_1_y) <= distance:
+                player = 1
+                ball_x , ball_y = player_1_x , player_1_y
+                shooter = 0
+                recent_player = 1
 
 def catching_ball_player2():
-    global player , ball_x , ball_y
-    if abs(ball_x - player_2_x) <= distance and abs(ball_y - player_2_y) <= distance:
-        player = 2
-        ball_x , ball_y = player_2_x , player_2_y
-        shooter = 0
+    global player , ball_x , ball_y , shooter , recent_player
+    if ball_x == 50 and ball_y == win_width / 2:
+        random_number = randint(0, 100)
+        if random_number <= 30:
+            player = 2
+            ball_x , ball_y = player_2_x , player_2_y
+            shooter = 0
+            recent_player = 2
+            update_playground()
+            update_ball()
+            update_left_side()
+            update_right_side()
+            pygame.display.update()
+
+            sleep(1)
+
+            player = 1
+            ball_x , ball_y = player_1_x , player_1_y
+            shooter = 0
+            recent_player = 1
+    
+        else:
+            exit(0)
 
 def catching_ball_player3():
-    global player , ball_x , ball_y
-    if abs(ball_x - player_3_x) <= distance and abs(ball_y - player_3_y) <= distance:
-        player = 3
-        ball_x , ball_y = player_3_x , player_3_y
-        shooter = 0
+    global player , ball_x , ball_y , shooter , recent_player
+    if player == 0:
+        if shooter != 3:
+            if abs(ball_x - player_3_x) <= distance and abs(ball_y - player_3_y) <= distance:
+                player = 3
+                ball_x , ball_y = player_3_x , player_3_y
+                shooter = 0
+                recent_player = 3
+
+
+def catching_ball_ai2():
+    global player , ball_x , ball_y , shooter , recent_player
+    if ball_x == win_length - 50 and ball_y == win_width / 2:
+        random_number = randint(0, 100)
+        if random_number <= 30:
+            player = 5
+            ball_x , ball_y = ai_2_x , ai_2_y
+            shooter = 0
+            recent_player = 5
+            update_playground()
+            update_ball()
+            update_left_side()
+            update_right_side()
+            pygame.display.update()
+
+            sleep(1)
+
+            player = 4
+            ball_x , ball_y = ai_1_x , ai_1_y
+            shooter = 0
+            recent_player = 4
+        
+        else:
+            exit(0)
 
 player_place_changer = 0
 player_place_dic = None
@@ -148,13 +198,10 @@ while True:
             if event.key == K_w or event.key == K_s or event.key == K_d or event.key == K_a:
                 player_place_changer = 0
 
-        if player == 0:
-            if shooter != 1:
-                catching_ball_player1()
-            if shooter != 2:
-                catching_ball_player2()
-            if shooter != 3:
-                catching_ball_player3()
+        catching_ball_player1()
+        catching_ball_player2()
+        catching_ball_player3()
+        catching_ball_ai2()
         
         if shooter != 0:
             if abs(win_length - 50 - ball_x) >= 20 or abs(win_width / 2 - ball_y) >= 20:
@@ -248,4 +295,3 @@ while True:
         update_left_side()
         update_right_side()
         pygame.display.update()
-        sleep(0.01)
