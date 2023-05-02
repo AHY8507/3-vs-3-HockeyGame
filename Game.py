@@ -6,7 +6,7 @@ from time import sleep
 pygame.init()
  
 win_length = 1500
-win_width = 800
+win_width = 700
 
 
 win = pygame.display.set_mode((win_length , win_width))
@@ -15,6 +15,8 @@ win = pygame.display.set_mode((win_length , win_width))
 pygame.display.set_caption("Game")
 
 recent_player = 1
+
+# recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
 
 player_1_x = 250
 player_1_y = 100 + 20
@@ -79,6 +81,8 @@ y = 0
 
 distance = 20
 
+
+
 def catching_ball_player1():
     global player , ball_x , ball_y , shooter , recent_player
     if player == 0:
@@ -124,6 +128,16 @@ def catching_ball_player3():
                 shooter = 0
                 recent_player = 3
 
+def catching_ball_ai1():
+    global player , ball_x , ball_y , shooter , recent_player
+    if player == 0:
+        if shooter != 1:
+            if abs(ball_x - ai_1_x) <= distance and abs(ball_y - ai_1_y) <= distance:
+                player = 4
+                ball_x , ball_y = ai_1_x , ai_1_y
+                shooter = 0
+                #recent_player = 4
+
 
 def catching_ball_ai2():
     global player , ball_x , ball_y , shooter , recent_player
@@ -133,7 +147,7 @@ def catching_ball_ai2():
             player = 5
             ball_x , ball_y = ai_2_x , ai_2_y
             shooter = 0
-            recent_player = 5
+            #recent_player = 5
             update_playground()
             update_ball()
             update_left_side()
@@ -145,13 +159,109 @@ def catching_ball_ai2():
             player = 4
             ball_x , ball_y = ai_1_x , ai_1_y
             shooter = 0
-            recent_player = 4
+            #recent_player = 4
         
         else:
             exit(0)
 
+
+def catching_ball_ai3():
+    global player , ball_x , ball_y , shooter , recent_player
+    if player == 0:
+        if shooter != 6:
+            if abs(ball_x - ai_3_x) <= distance and abs(ball_y - ai_3_y) <= distance:
+                player = 6
+                ball_x , ball_y = ai_3_x , ai_3_y
+                shooter = 0
+                #recent_player = 6
+
+
+def ai_algorithm_ai():
+    pass
+
+
+def ai_algorithm_player_off():
+    global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    
+    if abs(player_1_x - ai_1_x) > 10:
+        if player_1_x > ai_1_x:
+            ai_1_x += 8
+        else:
+            ai_1_x -= 8
+
+    if abs(player_1_y - ai_1_y) > 10:
+        if player_1_y > ai_1_y:
+            ai_1_y += 8
+        else:
+            ai_1_y -= 8
+
+    if abs(ball_x - ai_3_x) > 10:
+        if ball_x > ai_3_x:
+            ai_3_x += 8
+        else:
+            ai_3_x -= 8
+
+    if abs(ball_y - ai_3_y) > 10:
+        if ball_y > ai_3_y:
+            ai_3_y += 8
+        else:
+            ai_3_y -= 8
+
+
+def ai_algorithm_player_on():
+    global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+
+    if abs(player_3_x - ai_3_x) > 10:
+        if player_3_x > ai_3_x:
+            ai_3_x += 8
+        else:
+            ai_3_x -= 8
+
+    if abs(player_3_y - ai_3_y) > 10:
+        if player_3_y > ai_3_y:
+            ai_3_y += 8
+        else:
+            ai_3_y -= 8
+
+    if abs(player_1_x - ai_1_x) > 10:
+        if player_1_x > ai_1_x:
+            ai_1_x += 8
+        else:
+            ai_1_x -= 8
+
+    if abs(player_1_y - ai_1_y) > 10:
+        if player_1_y > ai_1_y:
+            ai_1_y += 8
+        else:
+            ai_1_y -= 8
+
+
+    if player == 1:
+        if abs(player_1_y - ai_1_y) <= 10 and abs(player_1_x - ai_1_x) <= 10:
+            random_number = randint(0 , 100)
+            if random_number <= 20:
+                player = 4
+                ball_x , ball_y = ai_1_x , ai_1_y
+                shooter = 0
+                #recent_player = 4
+
+    elif player == 2:
+        pass
+
+    elif player == 3:
+        if abs(player_3_y - ai_3_y) <= 10 and abs(player_3_x - ai_3_x) <= 10:
+            random_number = randint(0 , 100)
+            if random_number <= 20:
+                player = 6
+                ball_x , ball_y = ai_3_x , ai_3_y
+                shooter = 0
+                #recent_player = 6
+
+
+
 player_place_changer = 0
 player_place_dic = None
+
 
 while True:
     for event in pygame.event.get():
@@ -201,8 +311,17 @@ while True:
         catching_ball_player1()
         catching_ball_player2()
         catching_ball_player3()
+        catching_ball_ai1()
         catching_ball_ai2()
+        catching_ball_ai3()
         
+        if player == 1 or player == 2 or player == 3:
+            ai_algorithm_player_on()
+
+        if player == 0:
+            pass
+            #ai_algorithm_player_off()
+
         if shooter != 0:
             if abs(win_length - 50 - ball_x) >= 20 or abs(win_width / 2 - ball_y) >= 20:
                 if abs(win_length - 50 - x) > abs(win_width / 2 - y):
