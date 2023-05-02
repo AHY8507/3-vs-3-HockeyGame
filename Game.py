@@ -177,7 +177,77 @@ def catching_ball_ai3():
 
 
 def ai_algorithm_ai():
-    pass
+    global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    if player == 4:
+        if ai_1_x <= 200:
+            pass
+        else:
+            if abs(player_1_x - ai_1_x) <= 20 and abs(player_1_y - ai_1_y) <= 20:
+                random_number = randint(0 , 100)
+                if random_number <= 40:
+                    player = 6
+                else:
+                    ai_1_x -= 10
+                    ball_x = ai_1_x
+                    random_y = randint(1 , 2)
+                    if random_y == 1:
+                        if ai_1_y - 10 - 30 > 50:
+                            ai_1_y -= 10
+                            ball_y = ai_1_y
+
+                    else:
+                        if ai_1_y + 10 + 20 < win_width - 100:
+                            ai_1_y += 10
+                            ball_y = ai_1_y
+            else:
+                ai_1_x -= 10
+                ball_x = ai_1_x
+                random_y = randint(1 , 2)
+                if random_y == 1:
+                    if ai_1_y - 10 - 30 > 50:
+                        ai_1_y -= 10
+                        ball_y = ai_1_y
+
+                else:
+                    if ai_1_y + 10 + 20 < win_width - 100:
+                        ai_1_y += 10
+                        ball_y = ai_1_y
+                    
+    
+    if player == 6:
+        if ai_3_x <= 200:
+            pass
+        else:
+            if abs(player_3_x - ai_3_x) <= 20 and abs(player_3_y - ai_3_y) <= 20:
+                random_number = randint(0 , 100)
+                if random_number <= 40:
+                    player = 4
+                else:
+                    ai_3_x -= 10
+                    ball_x = ai_3_x
+                    random_y = randint(1 , 2)
+                    if random_y == 1:
+                        if ai_3_y - 10 - 30 > 50:
+                            ai_3_y -= 10
+                            ball_y = ai_3_y
+
+                    else:
+                        if ai_3_y + 10 + 20 < win_width - 100:
+                            ai_3_y += 10
+                            ball_y = ai_3_y
+            else:
+                ai_3_x -= 10
+                ball_x = ai_3_x
+                random_y = randint(1 , 2)
+                if random_y == 1:
+                    if ai_3_y - 10 - 30 > 50:
+                        ai_3_y -= 10
+                        ball_y = ai_3_y
+
+                else:
+                    if ai_3_y + 10 + 20 < win_width - 100:
+                        ai_3_y += 10
+                        ball_y = ai_3_y
 
 
 def ai_algorithm_player_off():
@@ -315,13 +385,15 @@ while True:
         catching_ball_ai2()
         catching_ball_ai3()
         
-        if player == 1 or player == 2 or player == 3:
+        if player == 1 or player == 3:
             ai_algorithm_player_on()
 
         if player == 0:
-            pass
-            #ai_algorithm_player_off()
+            ai_algorithm_player_off()
 
+        if player == 4 or player == 6:
+            ai_algorithm_ai()
+        
         if shooter != 0:
             if abs(win_length - 50 - ball_x) >= 20 or abs(win_width / 2 - ball_y) >= 20:
                 if abs(win_length - 50 - x) > abs(win_width / 2 - y):
