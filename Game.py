@@ -147,7 +147,7 @@ def catching_ball_player2():
     global player , ball_x , ball_y , shooter , recent_player
     if ball_x == 50 and ball_y == win_width / 2:
         random_number = randint(0, 100)
-        if random_number <= 30:
+        if random_number <= 80:
             player = 2
             ball_x , ball_y = player_2_x , player_2_y
             shooter = 0
@@ -193,7 +193,7 @@ def catching_ball_ai2():
     global player , ball_x , ball_y , shooter , recent_player
     if ball_x == win_length - 50 and ball_y == win_width / 2:
         random_number = randint(0, 100)
-        if random_number <= 30:
+        if random_number <= 80:
             player = 5
             ball_x , ball_y = ai_2_x , ai_2_y
             shooter = 0
@@ -561,7 +561,7 @@ while True:
             pygame.quit()
             exit()
         if event.type == KEYDOWN:
-            if event.key == K_r:
+            if event.key == K_q:
                 shooter = player
                 x = ball_x
                 y = ball_y
