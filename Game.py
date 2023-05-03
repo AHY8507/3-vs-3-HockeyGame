@@ -16,7 +16,7 @@ pygame.display.set_caption("Game")
 
 recent_player = 1
 
-# recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+# y , x , recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
 
 player_1_x = 250
 player_1_y = 100 + 20
@@ -72,6 +72,56 @@ def update_right_side():
 def find_keeper_place(ball_y , size_y , ground_y):
     return (ball_y * size_y) // ground_y
 
+def start_game_again():
+    global y , x , recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    player_place_changer = 0
+    player_place_dic = None
+    player = 0
+    recent_player = 1
+    shooter = 0
+
+    win_length = 1500
+    win_width = 700
+
+    x = 0
+    y = 0
+
+    distance = 20
+
+    player_1_x = 250
+    player_1_y = 100 + 20
+
+    player_2_x = 100
+    player_2_y = win_width / 2
+
+    player_3_x = 250
+    player_3_y = (win_width - 100) - 20
+
+    ai_1_x = win_length - 250 
+    ai_1_y = 100 + 20
+
+    ai_2_x = win_length - 100
+    ai_2_y = win_width / 2
+
+    ai_3_x = win_length - 250
+    ai_3_y = (win_width - 100) - 20
+
+    ball_x = win_length / 2
+    ball_y = win_width / 2
+
+    color_red = 0
+    color_green = 0
+    color_blue = 255
+
+    color_blue_changer = -1
+
+    update_playground()
+    update_ball()
+    update_left_side()
+    update_right_side()
+    pygame.display.update()
+
+
 player = 0
 
 shooter = 0 
@@ -116,7 +166,7 @@ def catching_ball_player2():
             recent_player = 1
     
         else:
-            exit(0)
+            start_game_again()
 
 def catching_ball_player3():
     global player , ball_x , ball_y , shooter , recent_player
@@ -162,7 +212,7 @@ def catching_ball_ai2():
             #recent_player = 4
         
         else:
-            exit(0)
+            start_game_again()
 
 
 def catching_ball_ai3():
@@ -175,12 +225,123 @@ def catching_ball_ai3():
                 shooter = 0
                 #recent_player = 6
 
+def player_alogorithm():
+    global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    if recent_player == 1:
+        if abs(player_3_x - ball_x) > 40:
+            if player_3_x > ball_x:
+                player_3_x -= 6
+            else:
+                player_3_x += 6
+
+        if abs(player_3_y - ball_y) > 40:
+            if player_3_y > ball_y:
+                player_3_y -= 6
+            else:
+                player_3_y += 6
+    else:
+        if abs(player_1_x - ball_x) > 40:
+            if player_1_x > ball_x:
+                player_1_x -= 6
+            else:
+                player_1_x += 6
+
+        if abs(player_1_y - ball_y) > 40:
+            if player_1_y > ball_y:
+                player_1_y -= 6
+            else:
+                player_1_y += 6
+
+def player_algorithm_ai():
+    global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    if player == 6:
+        if recent_player == 1:
+            if abs(player_3_x - ai_1_x) > 40:
+                if player_3_x > ai_1_x:
+                    player_3_x -= 6
+                else:
+                    player_3_x += 6
+
+            if abs(player_3_y - ai_1_y) > 40:
+                if player_3_y > ai_1_y:
+                    player_3_y -= 6
+                else:
+                    player_3_y += 6
+        
+        else:
+            if abs(player_1_x - ai_1_x) > 40:
+                if player_1_x > ai_1_x:
+                    player_1_x -= 6
+                else:
+                    player_1_x += 6
+
+            if abs(player_1_y - ai_1_y) > 40:
+                if player_1_y > ai_1_y:
+                    player_1_y -= 6
+                else:
+                    player_1_y += 6
+    
+    elif player == 4:
+        if recent_player == 1:
+            if abs(player_3_x - ai_3_x) > 40:
+                if player_3_x > ai_3_x:
+                    player_3_x -= 6
+                else:
+                    player_3_x += 6
+
+            if abs(player_3_y - ai_3_y) > 40:
+                if player_3_y > ai_3_y:
+                    player_3_y -= 6
+                else:
+                    player_3_y += 6
+        
+        else:
+            if abs(player_1_x - ai_3_x) > 40:
+                if player_1_x > ai_3_x:
+                    player_1_x -= 6
+                else:
+                    player_1_x += 6
+
+            if abs(player_1_y - ai_3_y) > 40:
+                if player_1_y > ai_3_y:
+                    player_1_y -= 6
+                else:
+                    player_1_y += 6
+
 
 def ai_algorithm_ai():
     global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
     if player == 4:
+        if recent_player == 1:
+            if abs(player_1_x - ai_3_x) > 40:
+                if player_1_x > ai_3_x:
+                    ai_3_x += 8
+                else:
+                    ai_3_x -= 8
+
+            elif abs(player_1_y - ai_3_y) > 40:
+                if player_1_y > ai_3_y:
+                    ai_3_y += 8
+                else:
+                    ai_3_y -= 8
+        else:
+            if abs(player_3_x - ai_3_x) > 40:
+                if player_3_x > ai_3_x:
+                    ai_3_x += 8
+                else:
+                    ai_3_x -= 8
+
+            elif abs(player_3_y - ai_3_y) > 40:
+                if player_3_y > ai_3_y:
+                    ai_3_y += 8
+                else:
+                    ai_3_y -= 8
+        
+        
         if ai_1_x <= 200:
-            pass
+            ball_x = 50
+            ball_y = win_width / 2
+
         else:
             if abs(player_1_x - ai_1_x) <= 20 and abs(player_1_y - ai_1_y) <= 20:
                 random_number = randint(0 , 100)
@@ -199,6 +360,25 @@ def ai_algorithm_ai():
                         if ai_1_y + 10 + 20 < win_width - 100:
                             ai_1_y += 10
                             ball_y = ai_1_y
+            
+            elif abs(player_3_x - ai_1_x) <= 20 and abs(player_3_y - ai_1_y) <= 20:
+                random_number = randint(0 , 100)
+                if random_number <= 40:
+                    player = 4
+                else:
+                    ai_1_x -= 10
+                    ball_x = ai_1_x
+                    random_y = randint(1 , 2)
+                    if random_y == 1:
+                        if ai_1_y - 10 - 30 > 50:
+                            ai_1_y -= 10
+                            ball_y = ai_1_y
+
+                    else:
+                        if ai_1_y + 10 + 20 < win_width - 100:
+                            ai_1_y += 10
+                            ball_y = ai_1_y
+            
             else:
                 ai_1_x -= 10
                 ball_x = ai_1_x
@@ -215,8 +395,36 @@ def ai_algorithm_ai():
                     
     
     if player == 6:
+        if recent_player == 1:
+            if abs(player_1_x - ai_1_x) > 40:
+                if player_1_x > ai_1_x:
+                    ai_1_x += 8
+                else:
+                    ai_1_x -= 8
+
+            elif abs(player_1_y - ai_1_y) > 40:
+                if player_1_y > ai_1_y:
+                    ai_1_y += 8
+                else:
+                    ai_1_y -= 8
+        else:
+            if abs(player_3_x - ai_1_x) > 40:
+                if player_3_x > ai_1_x:
+                    ai_1_x += 8
+                else:
+                    ai_1_x -= 8
+
+            elif abs(player_3_y - ai_1_y) > 40:
+                if player_3_y > ai_1_y:
+                    ai_1_y += 8
+                else:
+                    ai_1_y -= 8
+
+        
         if ai_3_x <= 200:
-            pass
+            ball_x = 50
+            ball_y = win_width / 2
+        
         else:
             if abs(player_3_x - ai_3_x) <= 20 and abs(player_3_y - ai_3_y) <= 20:
                 random_number = randint(0 , 100)
@@ -235,6 +443,20 @@ def ai_algorithm_ai():
                         if ai_3_y + 10 + 20 < win_width - 100:
                             ai_3_y += 10
                             ball_y = ai_3_y
+            
+            elif abs(player_1_x - ai_3_x) <= 20 and abs(player_1_y - ai_3_y) <= 20:
+                random_number = randint(0 , 100)
+                if random_number <= 40:
+                    player = 6
+                else:
+                    ai_3_x -= 10
+                    ball_x = ai_3_x
+                    random_y = randint(1 , 2)
+                    if random_y == 1:
+                        if ai_3_y - 10 - 30 > 50:
+                            ai_3_y -= 10
+                            ball_y = ai_3_y 
+
             else:
                 ai_3_x -= 10
                 ball_x = ai_3_x
@@ -346,6 +568,17 @@ while True:
                 player = 0
                 
 
+            if event.key == K_e:
+                if player == 4 or player == 6:
+                    if recent_player == 1 and abs(ball_x - player_1_x) <= distance and abs(ball_y - player_1_y) <= distance:
+                        ball_x , ball_y = player_1_x , player_1_y
+                        player = 1
+                        recent_player = 1
+                    elif recent_player == 3 and abs(ball_x - player_3_x) <= distance and abs(ball_y - player_3_y) <= distance:
+                        ball_x , ball_y = player_3_x , player_3_y
+                        player = 3
+                        recent_player = 3
+
             if event.key == K_f:
                 if recent_player == 1:
                     recent_player = 3
@@ -387,13 +620,16 @@ while True:
         
         if player == 1 or player == 3:
             ai_algorithm_player_on()
+            player_alogorithm()
 
         if player == 0:
             ai_algorithm_player_off()
+            player_alogorithm()
 
         if player == 4 or player == 6:
             ai_algorithm_ai()
-        
+            player_algorithm_ai()
+
         if shooter != 0:
             if abs(win_length - 50 - ball_x) >= 20 or abs(win_width / 2 - ball_y) >= 20:
                 if abs(win_length - 50 - x) > abs(win_width / 2 - y):
