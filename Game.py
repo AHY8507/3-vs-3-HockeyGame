@@ -121,6 +121,12 @@ def start_game_again():
     update_right_side()
     pygame.display.update()
 
+    print("1")
+    sleep(1)
+    print("2")
+    sleep(1)
+    print("3")
+    sleep(1)
 
 player = 0
 
@@ -166,7 +172,9 @@ def catching_ball_player2():
             recent_player = 1
     
         else:
+            print("AI goal!!!")
             start_game_again()
+
 
 def catching_ball_player3():
     global player , ball_x , ball_y , shooter , recent_player
@@ -212,6 +220,7 @@ def catching_ball_ai2():
             #recent_player = 4
         
         else:
+            print("Player goal!!!")
             start_game_again()
 
 
@@ -554,6 +563,7 @@ def ai_algorithm_player_on():
 player_place_changer = 0
 player_place_dic = None
 
+start_game_again()
 
 while True:
     for event in pygame.event.get():
