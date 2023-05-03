@@ -8,15 +8,24 @@ pygame.init()
 win_length = 1500
 win_width = 700
 
+key_index = 0
+key_event_number = 0
+
+key_list = [[K_w , K_a , K_s , K_d , K_q , K_e , K_f],
+[K_u , K_h , K_j , K_k , K_y , K_i , K_l],
+[K_g , K_v , K_b , K_n , K_f , K_h , K_m],
+[K_s , K_a , K_w , K_d , K_q , K_e , K_f],
+[K_s , K_d , K_w , K_a , K_q , K_e , K_f],
+[K_j , K_h , K_u , K_k , K_y , K_l , K_i]]
 
 win = pygame.display.set_mode((win_length , win_width))
-# win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 pygame.display.set_caption("Game")
 
 recent_player = 1
 
-# y , x , recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+player_score = 0
+ai_score = 0
 
 player_1_x = 250
 player_1_y = 100 + 20
@@ -73,7 +82,7 @@ def find_keeper_place(ball_y , size_y , ground_y):
     return (ball_y * size_y) // ground_y
 
 def start_game_again():
-    global y , x , recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
+    global key_index , key_event_number , y , x , recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
     player_place_changer = 0
     player_place_dic = None
     player = 0
@@ -150,10 +159,10 @@ def catching_ball_player1():
                 recent_player = 1
 
 def catching_ball_player2():
-    global player , ball_x , ball_y , shooter , recent_player
+    global player , ball_x , ball_y , shooter , recent_player , player_score , ai_score
     if ball_x == 50 and ball_y == win_width / 2:
         random_number = randint(0, 100)
-        if random_number <= 80:
+        if random_number <= 70:
             player = 2
             ball_x , ball_y = player_2_x , player_2_y
             shooter = 0
@@ -172,6 +181,8 @@ def catching_ball_player2():
             recent_player = 1
     
         else:
+            ai_score += 1
+            print("AI : " + str(ai_score) + "  ,  " + "Player : " + str(player_score))
             print("AI goal!!!")
             start_game_again()
 
@@ -194,18 +205,16 @@ def catching_ball_ai1():
                 player = 4
                 ball_x , ball_y = ai_1_x , ai_1_y
                 shooter = 0
-                #recent_player = 4
 
 
 def catching_ball_ai2():
-    global player , ball_x , ball_y , shooter , recent_player
+    global player , ball_x , ball_y , shooter , recent_player , player_score , ai_score
     if ball_x == win_length - 50 and ball_y == win_width / 2:
         random_number = randint(0, 100)
-        if random_number <= 80:
+        if random_number <= 70:
             player = 5
             ball_x , ball_y = ai_2_x , ai_2_y
             shooter = 0
-            #recent_player = 5
             update_playground()
             update_ball()
             update_left_side()
@@ -217,9 +226,10 @@ def catching_ball_ai2():
             player = 4
             ball_x , ball_y = ai_1_x , ai_1_y
             shooter = 0
-            #recent_player = 4
         
         else:
+            player_score += 1
+            print("AI : " + str(ai_score) + "  ,  " + "Player : " + str(player_score))
             print("Player goal!!!")
             start_game_again()
 
@@ -232,7 +242,6 @@ def catching_ball_ai3():
                 player = 6
                 ball_x , ball_y = ai_3_x , ai_3_y
                 shooter = 0
-                #recent_player = 6
 
 def player_alogorithm():
     global recent_player , player_1_x , player_1_y , player_2_x , player_2_y , player_3_x , player_3_y , ai_1_x , ai_1_y , ai_2_x , ai_2_y , ai_3_x , ai_3_y , ball_x , ball_y , player , shooter
@@ -544,7 +553,6 @@ def ai_algorithm_player_on():
                 player = 4
                 ball_x , ball_y = ai_1_x , ai_1_y
                 shooter = 0
-                #recent_player = 4
 
     elif player == 2:
         pass
@@ -556,7 +564,6 @@ def ai_algorithm_player_on():
                 player = 6
                 ball_x , ball_y = ai_3_x , ai_3_y
                 shooter = 0
-                #recent_player = 6
 
 
 
@@ -567,18 +574,33 @@ start_game_again()
 
 while True:
     for event in pygame.event.get():
+        if key_event_number % 500 == 0:
+            key_index = randint(0 , 5)
+            if key_index == 0:
+                print("up : w , left : a , down : s , right : d , shoot : q , get ball : e , pass : f") 
+            elif key_index == 1:
+                print("up : u , left : h , down : j , right : k , shoot : y , get ball : i , pass : l")
+            elif key_index == 2:
+                print("up : g , left : v , down : b , right : n , shoot : f , get ball : h , pass : m")
+            elif key_index == 3:
+                print("up : s , left : a , down : w , right : d , shoot : q , get ball : e , pass : f")
+            elif key_index == 4:
+                print("up : s , left : d , down : w , right : a , shoot : q , get ball : e , pass : f")
+            elif key_index == 5:
+                print("up : j , left : h , down : u , right : k , shoot : y , get ball : l , pass : i")
+
         if event.type == QUIT:
             pygame.quit()
             exit()
         if event.type == KEYDOWN:
-            if event.key == K_q:
+            if event.key == key_list[key_index][4]:
                 shooter = player
                 x = ball_x
                 y = ball_y
                 player = 0
                 
 
-            if event.key == K_e:
+            if event.key == key_list[key_index][5]:
                 if player == 4 or player == 6:
                     if recent_player == 1 and abs(ball_x - player_1_x) <= distance and abs(ball_y - player_1_y) <= distance:
                         ball_x , ball_y = player_1_x , player_1_y
@@ -589,7 +611,7 @@ while True:
                         player = 3
                         recent_player = 3
 
-            if event.key == K_f:
+            if event.key == key_list[key_index][6]:
                 if recent_player == 1:
                     recent_player = 3
                     if player == 1:
@@ -604,21 +626,21 @@ while True:
                         ball_y = player_1_y
                     
             
-            if event.key == K_w:
+            if event.key == key_list[key_index][0]:
                 player_place_changer = -10
                 player_place_dic = 1
-            elif event.key == K_s:
+            elif event.key == key_list[key_index][2]:
                 player_place_changer = 10
                 player_place_dic = 1
-            elif event.key == K_d:
+            elif event.key == key_list[key_index][3]:
                 player_place_changer = 10
                 player_place_dic = 0
-            elif event.key == K_a:
+            elif event.key == key_list[key_index][1]:
                 player_place_changer = -10
                 player_place_dic = 0
             
         elif event.type == KEYUP:
-            if event.key == K_w or event.key == K_s or event.key == K_d or event.key == K_a:
+            if event.key == key_list[key_index][0] or event.key == key_list[key_index][2] or event.key == key_list[key_index][3] or event.key == key_list[key_index][1]:
                 player_place_changer = 0
 
         catching_ball_player1()
@@ -727,6 +749,7 @@ while True:
                 else:
                     ai_2_y -= 5
 
+        key_event_number += 1
         update_playground()
         update_ball()
         update_left_side()
